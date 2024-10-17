@@ -1,0 +1,41 @@
+# Model configuration
+data:
+  class_names: ['ACRIMA', 'Glaucoma', 'ODIR-5K', 'ORIGA', 'cataract', 'retina_disease']
+  image_size: [224, 224]  
+  batch_size: 64
+  train_path: "data/processed/DATASET_101/Train"
+  test_path: "data/processed/DATASET_101/Test"
+
+training:
+  epochs: 20
+  early_stopping_patience: 8
+  reduce_lr_patience: 3
+  reduce_lr_factor: 0.5
+  batch_size: 64  # Adjust based on your GPU memory
+
+models:
+  densenet121:
+    input_shape: [224, 224, 4]  # 4 channels
+    num_classes: 6
+    learning_rate: 0.001
+    weights: "imagenet"  # Keep ImageNet weights
+    include_top: false
+
+  xception:
+    input_shape: [224, 224, 4]  # 4 channels
+    num_classes: 6
+    learning_rate: 0.001
+    weights: "imagenet"  # Keep ImageNet weights
+    include_top: false
+
+  custom:
+    input_shape: [224, 224, 4]  # 4 channels
+    num_classes: 6
+    learning_rate: 0.001
+
+mlflow:
+  experiment_name: "ocular_disease_detection"
+
+paths:
+  model_save_dir: "models/trained"
+  production_model_path: "models/production/best_model.keras"
