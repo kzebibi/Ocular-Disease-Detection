@@ -15,7 +15,7 @@ def create_custom_model(input_shape=(150, 150, 4), num_classes=6):
             tf.keras.layers.MaxPooling2D(2, 2),
             tf.keras.layers.Conv2D(32, (7, 7), activation="relu", name="L2"),
             tf.keras.layers.MaxPooling2D(2, 2),
-            tf.keras.layers.Conv2D(64, (7, 7), activation="relu", name="L2"),
+            tf.keras.layers.Conv2D(64, (7, 7), activation="relu", name="L3"),
             tf.keras.layers.MaxPooling2D(2, 2),
             tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(256, activation="relu", name="dense1"),

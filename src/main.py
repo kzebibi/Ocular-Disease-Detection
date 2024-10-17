@@ -59,7 +59,7 @@ def main():
     best_model_name = None
 
     for model_name in config["models"].keys():
-        with mlflow.start_run(run_name=model_name, nested=True):
+        with mlflow.start_run(run_name=model_name):
             # Train model
             history, trained_model, test_predictions = train_model(model_name, config)
 
