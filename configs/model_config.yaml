@@ -14,12 +14,12 @@ training:
   batch_size: 64  # Adjust based on your GPU memory
 
 models:
-  # densenet121:
-  #   input_shape: [224, 224, 4]  # 4 channels
-  #   num_classes: 6
-  #   learning_rate: 0.001
-  #   weights: "imagenet"  # Keep ImageNet weights
-  #   include_top: false
+  densenet121:
+    input_shape: [224, 224, 4]  # 4 channels
+    num_classes: 6
+    learning_rate: 0.001
+    weights: "imagenet"  # Keep ImageNet weights
+    include_top: false
 
   xception:
     input_shape: [224, 224, 4]  # 4 channels
@@ -28,10 +28,10 @@ models:
     weights: "imagenet"  # Keep ImageNet weights
     include_top: false
 
-  # custom:
-  #   input_shape: [224, 224, 4]  # 4 channels
-  #   num_classes: 6
-  #   learning_rate: 0.001
+  custom:
+    input_shape: [224, 224, 4]  # 4 channels
+    num_classes: 6
+    learning_rate: 0.001
 
 mlflow:
   experiment_name: "ocular_disease_detection"
