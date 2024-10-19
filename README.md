@@ -2,14 +2,6 @@
 
 This project aims to detect ocular diseases using deep learning techniques.
 
-## Setup
-
-1. Clone this repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run the data preprocessing script: `python src/data/make_dataset.py`
-4. Train the model: `python src/models/train_model.py`
-5. Evaluate the model: `python src/models/evaluate_model.py`
-
 ## Project Structure
 
 - `src/`: Source code for data processing, model training, and evaluation.
@@ -18,120 +10,78 @@ This project aims to detect ocular diseases using deep learning techniques.
 - `data/`: Directory for raw and processed data.
 - `models/`: Directory for saved models.
 
-## License
+### Training Guide with MLflow
 
-This project is licensed under the MIT License.
-
-
-
-
-Certainly! I'll provide you with a step-by-step guide on how to train this project for each model and view the results in MLflow. Here's the process:
-
-1. Setup:
-```bash
-# Update system and install Python 3.9
-sudo apt update
-sudo apt install -y python3.9 python3.9-venv python3.9-dev
-
-# Create a virtual environment (choose one of the following)
-# Option 1: Using venv (for general use)
-python3.9 -m venv ~/.venv
-# Option 2: Using conda (if you prefer conda)
-# conda create --prefix ./venv python=3.9
-
-# Activate the virtual environment
-source ~/.venv/bin/activate
-
-# Add the activation command to .bashrc for automatic activation
-echo "source ~/.venv/bin/activate" >> ~/.bashrc
-
-# Upgrade pip and install requirements
-pip install --upgrade pip
-pip install --no-cache-dir -r requirements.txt
-
-# Set up Kaggle API
-mkdir -p ~/.kaggle
-mv kaggle.json ~/.kaggle/
-chmod 600 ~/.kaggle/kaggle.json
-
-# Download the dataset
-python src/data/download_dataset.py
-
-# Run the main script
-python src/main.py
-
-# Start MLflow server (choose one of the following)
-# Option 1: Local SQLite backend
-mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlflow-artifacts
-
-# Option 2: Azure ML backend (make sure you have the correct URI)
-mlflow ui --backend-store-uri azureml://eastus.api.azureml.ms/mlflow/v2.0/subscriptions/0dce0142-38af-4e0b-a5a1-6ef7b0ed6ac2/resourceGroups/project/providers/Microsoft.MachineLearningServices/workspaces/depiproject
-```
-   - Ensure you have all the required dependencies installed. You might want to create a `requirements.txt` file with all the necessary packages.
-   - Upload the kaggle.json file 
+1. **Setup:**
    ```bash
-      mkdir ~/.kaggle
-      mv /workspaces/Ocular-Disease-Detection/kaggle.json ~/.kaggle/
+   # Update system and install Python 3.9
+   sudo apt update
+   sudo apt install -y python3.9 python3.9-venv python3.9-dev
+
+   # Create and activate a virtual environment
+   python3.9 -m venv ~/.venv
+   source ~/.venv/bin/activate
+
+   # Add the activation command to .bashrc for automatic activation
+   echo "source ~/.venv/bin/activate" >> ~/.bashrc
+
+   # Upgrade pip and install requirements
+   pip install --upgrade pip
+   pip install --no-cache-dir -r requirements.txt
+
+   # Set up Kaggle API
+   mkdir -p ~/.kaggle
+   mv kaggle.json ~/.kaggle/
+   chmod 600 ~/.kaggle/kaggle.json
+
+   # Download the dataset
+   python src/data/download_dataset.py
+
+   # Run the main script
+   python src/main.py
    ```
 
-2. Prepare the data:
-   - Run the data download and preprocessing scripts if you haven't already:
+2. **Start MLflow Server:**
+   - For local SQLite:
+     ```bash
+     mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlflow-artifacts --host 0.0.0.0 --port 5001
      ```
-     python src/data/download_dataset.py
+   - For Azure ML backend, ensure you have the correct URI:
+     ```bash
+     mlflow ui --backend-store-uri azureml://<your-azure-uri>
      ```
 
-3. Configure the models:
-   - Open `configs/model_config.yaml` and ensure it contains configurations for all the models you want to train (DenseNet121, Xception, and your custom model).
-   - Adjust hyperparameters, paths, and other settings as needed.
+4. **Configure Models:**
+   - Edit `configs/model_config.yaml` to ensure configurations for all desired models (e.g., DenseNet121, Xception) are set up correctly. Adjust hyperparameters and paths as needed.
 
-4. Start MLflow server:
-   - Open a terminal and start the MLflow tracking server:
-     ```
-     mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlflow-artifacts
-     ```
-   - This will start the MLflow UI, typically accessible at `http://localhost:5000`.
-
-5. Run the training script:
-   - Open a new terminal window and navigate to your project root directory.
-   - Run the main script:
-     ```
+5. **Run the Training Script:**
+   - Open a new terminal and navigate to your project root directory. Run:
+     ```bash
      python src/main.py
      ```
-   - This script will:
-     - Train each model specified in the config file.
-     - Log metrics, parameters, and artifacts to MLflow for each model.
-     - Save the best model based on validation accuracy.
+   - This process will train each model specified in your configuration file and log relevant metrics and artifacts to MLflow.
 
-6. Monitor training:
-   - While the script is running, you can monitor the progress in the terminal.
-   - You'll see output for each epoch, including training and validation metrics.
+6. **Monitor Training:**
+   - Monitor training progress in the terminal, which will include outputs for each epoch and metrics.
 
-7. View results in MLflow:
-   - Open a web browser and go to `http://localhost:5000`.
-   - In the MLflow UI, you'll see an experiment named "ocular_disease_detection" (or whatever you specified in the config).
-   - Click on the experiment to see all the runs (one for each model).
-   - For each run, you can:
-     - View metrics like accuracy, loss, AUC, etc.
-     - See parameters used for training.
-     - Access artifacts like model files, confusion matrices, and plots.
+7. **View Results in MLflow:**
+   - Access the MLflow UI at `http://localhost:5000`. You can explore experiments, run metrics, parameters, and artifacts.
 
-8. Compare models:
-   - In the MLflow UI, you can select multiple runs to compare their metrics side by side.
-   - Use the "Compare" feature to create charts comparing different metrics across models.
+8. **Compare Models:**
+   - Utilize the MLflow UI to select multiple runs for comparative analysis of metrics.
 
-9. Retrieve the best model:
-   - The script automatically selects the best model based on validation accuracy and saves it to the path specified in the config.
-   - You can find this model in the `models/production/` directory.
+9. **Retrieve the Best Model:**
+   - The best model based on validation accuracy is saved in the `models/production/` directory.
 
-10. Further analysis:
-    - You can use the MLflow API to programmatically retrieve run information for further analysis if needed.
+10. **Further Analysis:**
+    - You can programmatically retrieve and analyze run information using the MLflow API.
 
-11. Shut down:
-    - Once you're done, you can stop the MLflow server by pressing Ctrl+C in its terminal window.
+11. **Shutdown:**
+    - Stop the MLflow server by pressing Ctrl+C in its terminal.
 
-Additional tips:
-- If you want to run experiments with different hyperparameters, you can modify the `model_config.yaml` file and run the script multiple times.
-- You can use MLflow's `mlflow.keras.autolog()` function (which is likely already implemented in your `train_model.py`) to automatically log many Keras metrics without explicit logging statements.
-- If you're working in a team, you might want to set up a remote tracking server for MLflow so that everyone can access the results.
+### Additional Tips:
+- Modify the `model_config.yaml` to experiment with different hyperparameters and rerun the script.
+- Leverage `mlflow.keras.autolog()` in your training code to automatically log Keras metrics.
+- Consider setting up a remote MLflow tracking server for team collaboration.
 
-Remember to document any specific setup steps or requirements for your project, especially if you're working with a team or plan to open-source the project.
+Document any specific setup steps or requirements unique to your project for team use or open-sourcing.
