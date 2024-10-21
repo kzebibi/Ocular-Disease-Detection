@@ -1,6 +1,6 @@
 # Model configuration
 data:
-  class_names: ['ACRIMA', 'Glaucoma', 'ODIR-5K', 'ORIGA', 'cataract', 'retina_disease']
+  class_names: ["ACRIMA", "Glaucoma", "ODIR-5K", "ORIGA", "cataract", "retina_disease"]
   image_size: [224, 224]  
   batch_size: 64
   train_path: "data/processed/DATASET_101/Train"

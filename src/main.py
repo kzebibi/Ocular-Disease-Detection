@@ -4,7 +4,7 @@ import mlflow
 from sklearn.metrics import confusion_matrix
 from azureml.core import Workspace, Run
 from azureml.mlflow import get_mlflow_tracking_uri
-
+import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from data.preprocess import create_data_generators
@@ -53,7 +53,11 @@ def main():
     # Update the input shape in the config to match your data
     update_model_input_shapes(config)
 
+
+    # Save class names to a JSON file
     class_names = list(train_generator.class_indices.keys())
+    with open('class_names.json', 'w') as f:
+        json.dump(class_names, f)
 
     best_accuracy = 0
     best_model_name = None
